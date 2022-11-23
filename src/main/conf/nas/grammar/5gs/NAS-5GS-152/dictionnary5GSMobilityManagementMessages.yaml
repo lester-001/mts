@@ -90,7 +90,13 @@ messages:
          71:
            type: "NAS message container"
            nBitLength: 16
-
+  - name: "Identity request"
+    mandatory:
+      - type: "Spare half octet"
+        length: 4
+      - name: "5GS identity type"
+        type: "5GS identity type"
+        length: 4
   - name: "Authentication request"
     mandatory:
       - type: "Spare half octet"

@@ -70,6 +70,7 @@ import org.bn.IDecoder;
 import org.bn.IEncoder;
 import org.dom4j.Document;
 import org.dom4j.Element;
+import static com.ericsson.mts.nas.writer.XMLFormatWriter.bytesToHex;
 
 /**
  *
@@ -115,6 +116,8 @@ public class PluggableParameterOperatorBinary extends AbstractPluggableParameter
     final private String NAME_BIN_ELEMENT_SETFROM = "binary.elementSetFrom";
     final private String NAME_BIN_COMPRESS = "binary.compress";
     final private String NAME_BIN_UNCOMPRESS = "binary.uncompress";
+    final private String NAME_BIN_XOR = "binary.xor";
+    final private String NAME_BIN_CALCRES= "binary.calcres";
 
     
     public PluggableParameterOperatorBinary()
@@ -156,6 +159,8 @@ public class PluggableParameterOperatorBinary extends AbstractPluggableParameter
         this.addPluggableName(new PluggableName(NAME_BIN_ELEMENT_SETFROM));
         this.addPluggableName(new PluggableName(NAME_BIN_COMPRESS));
         this.addPluggableName(new PluggableName(NAME_BIN_UNCOMPRESS));
+        this.addPluggableName(new PluggableName(NAME_BIN_XOR));
+        this.addPluggableName(new PluggableName(NAME_BIN_CALCRES));
     }
 
     @Override
@@ -504,6 +509,29 @@ public class PluggableParameterOperatorBinary extends AbstractPluggableParameter
                     	ret += String.format("%02x", authTag[a], 16);
                     result.add(ret);
                 }
+                else if (name.equalsIgnoreCase(NAME_BIN_CALCRES))
+                {
+                	// param_1 = tab holding encrypted RTP packets to authenticate 
+                	Parameter param_2 = assertAndGetParameter(operands, "value2"); // AUTH KEY
+                	
+                	byte[] data =  DatatypeConverter.parseHexBinary(param_1.get(0).toString());
+                	byte[] authKey = DatatypeConverter.parseHexBinary(param_2.get(0).toString());                	
+
+                	Mac hmacSha256 = Mac.getInstance("HmacSHA256");
+                    SecretKeySpec secretKeySpec = new SecretKeySpec(authKey, "HmacSHA256");
+                	try 
+                    {
+                        hmacSha256.init(secretKeySpec);
+                    } 
+                    catch (InvalidKeyException e) 
+                    {
+                        e.printStackTrace();
+                    }
+                	
+                    byte[] authTag = hmacSha256.doFinal(data);
+                    String ret = new String(bytesToHex(authTag));
+                    result.add(ret);
+                }
                 else if (name.equalsIgnoreCase(NAME_BIN_DIFFERENCE))
                 {
                 	String string1 = param_1.get(i).toString().replace(" ", "");
@@ -734,6 +762,22 @@ public class PluggableParameterOperatorBinary extends AbstractPluggableParameter
                         
                         result.add( DefaultArray.toHexString(new DefaultArray(baos.toByteArray())) ) ;
                     }
+                }
+                else if (name.equalsIgnoreCase(NAME_BIN_XOR)) 
+                {
+                    Parameter param_2 = assertAndGetParameter(operands, "value2");
+
+                    String string1 = param_1.get(i).toString();   
+                    String string2 = param_2.get(i).toString();   
+
+                    byte[] data1 = DefaultArray.fromHexString(string1).getBytes() ;
+                    byte[] data2 = DefaultArray.fromHexString(string2).getBytes() ;
+
+                    byte[] data_out = xor(data1, data2);
+                    ByteArrayOutputStream baos =  new ByteArrayOutputStream();
+                    
+                    baos.write(data_out, 0, data_out.length);
+                    result.add( DefaultArray.toHexString(new DefaultArray(baos.toByteArray())) ) ;
                 }
                 else
                 {
@@ -1258,6 +1302,17 @@ public class PluggableParameterOperatorBinary extends AbstractPluggableParameter
 	    // decode the elements list
 	    newElement.decodeFromArray(array, dico);
 	    return newElement;
+    }
+    
+    public static byte[] xor(byte[] b1, byte[] b2) {
+        if (b1.length != b2.length) {
+            throw new RuntimeException("Array sizes differ");
+        }
+        byte[] ret = new byte[b1.length];
+        for (int i = 0; i < ret.length; i++) {
+            ret[i] = (byte) (b1[i] ^ b2[i]);
+        }
+        return ret;
     }
 }
 

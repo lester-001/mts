@@ -551,6 +551,13 @@
             <systemPath>${basedir}/lib/JavaSCTP-0-5-8.jar</systemPath>   
         </dependency>
         <dependency>
+            <groupId>com.github.brake.threegpp</groupId>
+            <artifactId>milenage</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope> 
+            <systemPath>${basedir}/lib/milenage-1.0.0.jar</systemPath>   
+        </dependency>
+        <dependency>
             <groupId>jpcap</groupId>
             <artifactId>jpcap</artifactId>
             <version>0.7</version>

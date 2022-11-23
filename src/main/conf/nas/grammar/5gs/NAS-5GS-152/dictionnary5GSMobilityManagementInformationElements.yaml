@@ -70,6 +70,19 @@ elements:
         name: "NAS key set identifier value"
         length: 3
 
+  - name: "5GS identity type"
+    pdu:
+      - "@type": "DIGITS"
+        name: "Type of identity"
+        length: 4
+        namedValue:
+          0: "No identity"
+          1: "SUCI"
+          2: "5G-GUTI"
+          3: "IMEI"
+          4: "5G-S-TMSI"
+          5: "IMEISV"
+
   - name: "5GS mobile identity"
     pdu:
       - "@type": "DIGITS"
