@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Related XMLSchema file: conf/schemas/scenario.xsd -->
+<scenario>
+    <function name="PDUSessionModifyComplete">
+        <input>
+        </input>
+    
+        <do>    
+            <parameter name="[mod_msg]" operation="set">
+            <![CDATA[
+<L3MessageWrapper>
+    <ExtendedProtocolDiscriminator>
+        <ExtendedProtocolDiscriminator>
+            <ExtendedProtocolDiscriminator>A5gsMobilityManagementMessages</ExtendedProtocolDiscriminator>
+        </ExtendedProtocolDiscriminator>
+    </ExtendedProtocolDiscriminator>
+    <SpareHalfOctet>
+        <SpareHalfOctet/></SpareHalfOctet>
+    <SecurityHeaderType>
+        <SecurityHeaderType>
+            <SecurityHeaderType>IntegrityProtectedAndCiphered</SecurityHeaderType>
+            <IntegrityProtectedAndCiphered>
+                <MessageAuthenticationCode>
+                    <MessageAuthenticationCode>
+                        <Length>32</Length>
+                        <MessageAuthenticationCodeValue>28936D2C</MessageAuthenticationCodeValue>
+                    </MessageAuthenticationCode>
+                </MessageAuthenticationCode>
+                <SequenceNumber>
+                    <SequenceNumber>
+                        <SequenceNumberValue>6</SequenceNumberValue>
+                    </SequenceNumber>
+                </SequenceNumber>
+            </IntegrityProtectedAndCiphered>
+        </SecurityHeaderType>
+    </SecurityHeaderType>
+    <PlainNas5GsMessage>
+        <ExtendedProtocolDiscriminator>
+            <ExtendedProtocolDiscriminator>
+                <ExtendedProtocolDiscriminator>A5gsMobilityManagementMessages</ExtendedProtocolDiscriminator>
+            </ExtendedProtocolDiscriminator>
+        </ExtendedProtocolDiscriminator>
+        <SpareHalfOctet>
+            <SpareHalfOctet/></SpareHalfOctet>
+        <SecurityHeaderType>
+            <SecurityHeaderType>
+                <SecurityHeaderType>Plain5gsNasMessageNotSecurityProtected</SecurityHeaderType>
+                <Plain5gsNasMessageNotSecurityProtected>
+                    <MessageType>
+                        <MessageType>
+                            <MessageType>UlNasTransport</MessageType>
+                            <UlNasTransport>
+                                <SpareHalfOctet>
+                                    <SpareHalfOctet/></SpareHalfOctet>
+                                <PayloadContainerType>
+                                    <PayloadContainerType>
+                                        <PayloadContainerType>N1SmInformation</PayloadContainerType>
+                                    </PayloadContainerType>
+                                </PayloadContainerType>
+                                <PayloadContainer>
+                                    <Length>4</Length>
+                                    <PayloadContainer>
+                                        <ExtendedProtocolDiscriminator>A5gsSessionManagementMessages</ExtendedProtocolDiscriminator>
+                                        <PduSessionIdentity>[ue_pdu_session_id]</PduSessionIdentity>
+                                        <Pti>0</Pti>
+                                        <MessageType>PduSessionModificationComplete</MessageType>
+                                    </PayloadContainer>
+                                </PayloadContainer>
+                                <PduSessionId>
+                                    <IEI>12</IEI>
+                                    <PduSessionIdentity2>
+                                        <PduSessionIdentity2Value>[ue_pdu_session_id]</PduSessionIdentity2Value>
+                                    </PduSessionIdentity2>
+                                </PduSessionId>
+                            </UlNasTransport>
+                        </MessageType>
+                    </MessageType>
+                </Plain5gsNasMessageNotSecurityProtected>
+            </SecurityHeaderType>
+        </SecurityHeaderType>
+    </PlainNas5GsMessage>
+</L3MessageWrapper>
+            ]]>
+            </parameter>
+
+            <parameter name="[pdu_sess_mod_msg]" operation="protocol.setFromNAS" value="[mod_msg]" value2="encode"/>
+
+        </do>
+      
+        <output>
+            <parameter name="[function:pdu_sess_mod_msg]" />
+        </output>
+    </function>
+</scenario>

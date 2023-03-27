@@ -4,6 +4,7 @@ import com.devoteam.srit.xmlloader.core.Parameter;
 import com.devoteam.srit.xmlloader.core.ParameterKey;
 import com.devoteam.srit.xmlloader.core.Runner;
 import com.devoteam.srit.xmlloader.core.protocol.*;
+import com.devoteam.srit.xmlloader.ngap.MsgNgap;
 import com.devoteam.srit.xmlloader.ngap.StackNgap;
 import com.devoteam.srit.xmlloader.sctp.MsgTransportInfosSctp;
 import com.ericsson.mts.asn1.ASN1Translator;
@@ -222,7 +223,6 @@ public class MsgS1ap extends Msg {
 
                 Element nasPDUElement = (Element) nodes.item(i);
                 NodeList childList = nasPDUElement.getChildNodes();
-
                 for(int j = 0; j < childList.getLength(); j++){
 
                     if(childList.item(j).getNodeType() == Node.ELEMENT_NODE){
@@ -245,7 +245,7 @@ public class MsgS1ap extends Msg {
                 }
             }
         }
-
+        
         XMLFormatReader xmlFormatReader = new XMLFormatReader(element, getXmlRootNodeName());
         BitArray bitArray = new BitArray();
         getASN1Translator().encode(getXmlRootNodeName(), bitArray, xmlFormatReader);

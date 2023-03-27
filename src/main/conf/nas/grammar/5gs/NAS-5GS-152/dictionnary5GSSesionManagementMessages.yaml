@@ -65,6 +65,9 @@ messages :
         length: 4
       28:
         type: "5GSM capability"
+      7B:
+        type: "Extended protocol configuration options"
+        length: -1
 
   - name: "PDU session establishment accept"
     mandatory:
@@ -77,7 +80,7 @@ messages :
         length: -1
       - type: "Session-AMBR"
     optional:
-        58:
+        59:
           type: "5GSM cause"
           length: 8
         29:
@@ -93,6 +96,9 @@ messages :
           length: -1
         25:
           type: "DNN"
+          length: -1
+        7B:
+          type: "Extended protocol configuration options"
           length: -1
 
   - name: "PDU session release command"

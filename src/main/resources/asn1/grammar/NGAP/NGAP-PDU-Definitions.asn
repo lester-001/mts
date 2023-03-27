@@ -320,7 +320,8 @@ PDUSessionResourceSetupRequestIEs NGAP-PROTOCOL-IES ::= {
 	{ ID id-RAN-UE-NGAP-ID							CRITICALITY reject	TYPE RAN-UE-NGAP-ID								PRESENCE mandatory	}|
 	{ ID id-RANPagingPriority						CRITICALITY ignore	TYPE RANPagingPriority							PRESENCE optional		}|
 	{ ID id-NAS-PDU									CRITICALITY reject	TYPE NAS-PDU									PRESENCE optional		}|
-	{ ID id-PDUSessionResourceSetupListSUReq		CRITICALITY reject	TYPE PDUSessionResourceSetupListSUReq		PRESENCE mandatory	},
+	{ ID id-PDUSessionResourceSetupListSUReq		CRITICALITY reject	TYPE PDUSessionResourceSetupListSUReq		PRESENCE mandatory	}|
+	{ ID id-UEAggregateMaximumBitRate				CRITICALITY ignore	TYPE UEAggregateMaximumBitRate				PRESENCE optional		},
 	...
 }
 

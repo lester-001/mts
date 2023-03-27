@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Related XMLSchema file: conf/schemas/scenario.xsd -->
+<scenario>
+    <function name="handlePDUSessionResourceSetup">
+        <input>
+        </input>
+    
+        <do>    
+            <function file="ngap/PDUSessionResourceSetupResponse.xml" />
+
+            <call name="sendPDUSessionResourceSetupResp" >
+            </call>
+        </do>
+      
+        <output>
+        </output>
+    </function>
+</scenario>

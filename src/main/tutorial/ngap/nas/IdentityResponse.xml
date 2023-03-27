@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Related XMLSchema file: conf/schemas/scenario.xsd -->
+<scenario>
+    <function name="identityReqsponse">
+        <input>
+            <parameter name="[function:mobile_id]" />
+        </input>
+    
+        <do>    
+            <parameter name="[id_msg]" operation="set">
+            <![CDATA[
+<L3MessageWrapper>
+    <ExtendedProtocolDiscriminator>
+        <ExtendedProtocolDiscriminator>
+            <ExtendedProtocolDiscriminator>A5gsMobilityManagementMessages</ExtendedProtocolDiscriminator>
+        </ExtendedProtocolDiscriminator>
+    </ExtendedProtocolDiscriminator>
+    <SpareHalfOctet>
+        <SpareHalfOctet/></SpareHalfOctet>
+    <SecurityHeaderType>
+        <SecurityHeaderType>
+            <SecurityHeaderType>IntegrityProtected</SecurityHeaderType>
+            <IntegrityProtected>
+                <MessageAuthenticationCode>
+                    <MessageAuthenticationCode>
+                        <Length>32</Length>
+                        <MessageAuthenticationCodeValue>33E19B1E</MessageAuthenticationCodeValue>
+                    </MessageAuthenticationCode>
+                </MessageAuthenticationCode>
+                <SequenceNumber>
+                    <SequenceNumber>
+                        <SequenceNumberValue>4</SequenceNumberValue>
+                    </SequenceNumber>
+                </SequenceNumber>
+            </IntegrityProtected>
+        </SecurityHeaderType>
+    </SecurityHeaderType>
+    <PlainNas5GsMessage>
+        <ExtendedProtocolDiscriminator>
+            <ExtendedProtocolDiscriminator>
+                <ExtendedProtocolDiscriminator>A5gsMobilityManagementMessages</ExtendedProtocolDiscriminator>
+            </ExtendedProtocolDiscriminator>
+        </ExtendedProtocolDiscriminator>
+        <SpareHalfOctet>
+            <SpareHalfOctet/></SpareHalfOctet>
+        <SecurityHeaderType>
+            <SecurityHeaderType>
+                <SecurityHeaderType>Plain5gsNasMessageNotSecurityProtected</SecurityHeaderType>
+                <Plain5gsNasMessageNotSecurityProtected>
+                    <MessageType>
+                        <MessageType>
+                            <MessageType>IdentityResponse</MessageType>
+                            <IdentityResponse>
+                                <A5gsMobileIdentity>
+                                    <Length>13</Length>
+                                    <A5gsMobileIdentity>
+                                        <Digit>0</Digit>
+                                        <OddEvenIndication>EvenNumberOfIdentityDigits</OddEvenIndication>
+                                        <TypeOfIdentity>Suci</TypeOfIdentity>
+                                        <MccDigit2>0</MccDigit2>
+                                        <MccDigit1>0</MccDigit1>
+                                        <MncDigit3>15</MncDigit3>
+                                        <MccDigit3>1</MccDigit3>
+                                        <MncDigit2>1</MncDigit2>
+                                        <MncDigit1>0</MncDigit1>
+                                        <RoutingIndicatorDigit2>15</RoutingIndicatorDigit2>
+                                        <RoutingIndicatorDigit1>0</RoutingIndicatorDigit1>
+                                        <RoutingIndicatorDigit4>15</RoutingIndicatorDigit4>
+                                        <RoutingIndicatorDigit3>15</RoutingIndicatorDigit3>
+                                        <ProtectionSchemeId>0</ProtectionSchemeId>
+                                        <HomeNetworkPublicKeyIdentifier>NullScheme</HomeNetworkPublicKeyIdentifier>
+                                        <SchemeOutput>0000000010</SchemeOutput>
+                                    </A5gsMobileIdentity>
+                                </A5gsMobileIdentity>
+                            </IdentityResponse>
+                        </MessageType>
+                    </MessageType>
+                </Plain5gsNasMessageNotSecurityProtected>
+            </SecurityHeaderType>
+        </SecurityHeaderType>
+    </PlainNas5GsMessage>
+</L3MessageWrapper>
+            ]]>
+            </parameter>
+            
+            <parameter name="[id_msgd]" operation="protocol.setFromNAS" value="[id_msg]" value2="encode"/>
+
+        </do>
+      
+        <output>
+            <parameter name="[function:id_msgd]" />
+        </output>
+    </function>
+</scenario>

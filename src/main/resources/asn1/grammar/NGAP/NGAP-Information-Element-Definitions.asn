@@ -1917,7 +1917,7 @@ PDUSessionResourceModifyListModRes ::= SEQUENCE (SIZE(1..maxnoofPDUSessions)) OF
 
 PDUSessionResourceModifyItemModRes ::= SEQUENCE {
 	pDUSessionID									PDUSessionID,
-	pDUSessionResourceModifyResponseTransfer		OCTET STRING (CONTAINING PDUSessionResourceModifyResponseTransfer)		OPTIONAL,
+	pDUSessionResourceModifyResponseTransfer		OCTET STRING (CONTAINING PDUSessionResourceModifyResponseTransfer)	,
 	iE-Extensions		ProtocolExtensionContainer { {PDUSessionResourceModifyItemModRes-ExtIEs} }	OPTIONAL,
 	...
 }

@@ -437,7 +437,7 @@ public class ChannelSunNioSctp extends ChannelSctp implements IOHandler
         	assert(this.selectionKey!=null):"the channel must be opened";
 
         	//normalement cette methode est appellee dans le handler inputReady
-	   		//il devrait donc y avoir des données a lire
+	   		//il devrait donc y avoir des donnï¿½es a lire
 	   		if( !this.selectionKey.isReadable() ){
 	   			return;
 	   		}
@@ -446,7 +446,7 @@ public class ChannelSunNioSctp extends ChannelSctp implements IOHandler
 	    	 * allocation d'un ByteBuffer a chaque lecture
 	    	 *   un buffer est theoriquement reutilisable apres consommation en faisant un buffer.clear()
 	    	 *   
-	    	 * taille du buffer basée sur le MTU
+	    	 * taille du buffer basï¿½e sur le MTU
 	    	 *   https://www.ietf.org/mail-archive/web/sigtran/current/msg08100.html
 	    	 */
 	    	ByteBuffer payloadByteBuffer = ByteBuffer.allocate(ChannelSunNioSctp.MAX_RECEIVE_BUFFER_LENGTH);
@@ -697,7 +697,7 @@ public class ChannelSunNioSctp extends ChannelSctp implements IOHandler
 	 */
     @Override
     public void onIorOutputReady(){
-		GlobalLogger.instance().getApplicationLogger().debug(TextEvent.Topic.PROTOCOL, ""+this.getName()+":ChannelSunNioSctp#onIorOutputReady");
+		//GlobalLogger.instance().getApplicationLogger().debug(TextEvent.Topic.PROTOCOL, ""+this.getName()+":ChannelSunNioSctp#onIorOutputReady");
 				
     	this.outputReadyLock.lock();
 		try{

@@ -97,6 +97,10 @@ messages:
       - name: "5GS identity type"
         type: "5GS identity type"
         length: 4
+  - name: "Identity response"
+    mandatory:
+      - type: "5GS mobile identity"
+        nBitLength: 16
   - name: "Authentication request"
     mandatory:
       - type: "Spare half octet"
@@ -178,7 +182,7 @@ messages:
         name: "Allowed NSSAI"
         length: -1
       11:
-        type: "NSSAI"
+        type: "Rejected NSSAI"
         name: "Rejected NSSAI"
         length: -1
       31:

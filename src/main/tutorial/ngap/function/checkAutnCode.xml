@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Related XMLSchema file: conf/schemas/scenario.xsd -->
+<scenario>
+    <function name="checkAuthCode">
+        <input>
+            <parameter name="[function:nas_pdu_msg]" />
+            <parameter name="[function:key]" />
+            <parameter name="[function:is_uplink]" />
+            <parameter name="[function:selected_int_algorithm]" />
+        </input>
+    
+        <do>    
+          <!-- 
+             <parameter name="[seq_num]" operation="string.xpath" value="[nas_pdu_msg]" value2="//SequenceNumberValue/text()"/>
+          -->
+            <parameter name="[seq_num]" operation="set" value="2"/>
+            <parameter name="[nas_pdu_msg]" operation="string.substring" value="[nas_pdu_msg]" value2="12"/>
+            <parameter name="[sqn]" operation="set" value="2"/>
+            <parameter name="[data]" operation="set" value="[sqn]" value2="12"/>
+            
+            <if> <condition> <test parameter="[selected_int_algorithm]" condition="string.contains" value="ia1"/> </condition>
+                <then>  
+                    <parameter name="[oret]" operation="protocol.setFromNAS" value="[nas_pdu_msg]" value2="IA1" value3="[key]" value4="[seq_num]" value5="[is_uplink]"/>
+                </then>   
+            </if>
+
+            <if> <condition> <test parameter="[selected_int_algorithm]" condition="string.contains" value="ia2"/> </condition>
+                <then>   
+                    <parameter name="[oret]" operation="protocol.setFromNAS" value="[nas_pdu_msg]" value2="IA2" value3="[key]" value4="[seq_num]" value5="[is_uplink]"/>
+                </then>   
+            </if>
+            
+            <if> <condition> <test parameter="[selected_int_algorithm]" condition="string.contains" value="ia3"/> </condition>
+                <then>   
+                    <parameter name="[oret]" operation="protocol.setFromNAS" value="[nas_pdu_msg]" value2="IA3" value3="[key]" value4="[seq_num]" value5="[is_uplink]"/>
+                </then>   
+            </if>
+
+            <parameter name="[out_ret]" operation="set" value="[oret(0)]"/>
+            <parameter name="[out_mac]" operation="set" value="[oret(1)]"/>      
+        </do>
+      
+        <output>
+            <parameter name="[function:out_ret]" />
+            <parameter name="[function:out_mac]" />
+        </output>
+    </function>
+</scenario>

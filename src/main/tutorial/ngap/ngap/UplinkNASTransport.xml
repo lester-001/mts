@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Related XMLSchema file: conf/schemas/scenario.xsd -->
+<scenario>
+    <function name="uplinkNas">
+        <input>
+            <parameter name="[function:nas_pdu_msg]" />
+        </input>
+    
+        <do>    
+            <sendMessageNGAP name="uplinkNasTransport" channel="[ngap_ch_name]">
+                <NGAP-PDU>
+                    <initiatingMessage>
+                        <procedureCode>46</procedureCode>
+                        <criticality>ignore</criticality>
+                        <value>
+                            <UplinkNASTransport>
+                                <protocolIEs>
+                                    <protocolIEs>
+                                        <id>10</id>
+                                        <criticality>reject</criticality>
+                                        <value>
+                                            <AMF-UE-NGAP-ID>[AMF_UE_NGAP_ID]</AMF-UE-NGAP-ID>
+                                        </value>
+                                    </protocolIEs>
+                                    <protocolIEs>
+                                        <id>85</id>
+                                        <criticality>reject</criticality>
+                                        <value>
+                                            <RAN-UE-NGAP-ID>[RAN_UE_NGAP_ID]</RAN-UE-NGAP-ID>
+                                        </value>
+                                    </protocolIEs>
+                                    <protocolIEs>
+                                        <id>38</id>
+                                        <criticality>reject</criticality>
+                                        <value>
+                                            <NAS-PDU>
+                                                [nas_pdu_msg]
+                                            </NAS-PDU>
+                                        </value>
+                                    </protocolIEs>
+                                    <protocolIEs>
+                                        <id>121</id>
+                                        <criticality>reject</criticality>
+                                        <value>
+                                            <UserLocationInformation>
+                                                <userLocationInformationNR>
+                                                    <nR-CGI>
+                                                        <pLMNIdentity>[gnb_plmn_id]</pLMNIdentity>
+                                                        <nRCellIdentity>[gnb_cell_id]</nRCellIdentity>
+                                                    </nR-CGI>
+                                                    <tAI>
+                                                        <pLMNIdentity>[gnb_plmn_id]</pLMNIdentity>
+                                                        <tAC>[gnb_tac]</tAC>
+                                                    </tAI>
+                                                </userLocationInformationNR>
+                                            </UserLocationInformation>
+                                        </value>
+                                    </protocolIEs>
+                                </protocolIEs>
+                            </UplinkNASTransport>
+                        </value>
+                    </initiatingMessage>
+                </NGAP-PDU>
+            </sendMessageNGAP>
+        </do>
+      
+    </function>
+</scenario>

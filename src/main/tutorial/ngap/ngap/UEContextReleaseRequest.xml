@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Related XMLSchema file: conf/schemas/scenario.xsd -->
+<scenario>
+    <function name="releaseRequest">
+        <input>
+        </input>
+    
+        <do>    
+            <sendMessageNGAP name="UEContextReleaseRequest" channel="[ngap_ch_name]">
+                <NGAP-PDU>
+                    <initiatingMessage>
+                        <procedureCode>42</procedureCode>
+                        <criticality>ignore</criticality>
+                        <value>
+                            <UEContextReleaseRequest>
+                                <protocolIEs>
+                                    <protocolIEs>
+                                        <id>10</id>
+                                        <criticality>reject</criticality>
+                                        <value>
+                                            <AMF-UE-NGAP-ID>[AMF_UE_NGAP_ID]</AMF-UE-NGAP-ID>
+                                        </value>
+                                    </protocolIEs>
+                                    <protocolIEs>
+                                        <id>85</id>
+                                        <criticality>reject</criticality>
+                                        <value>
+                                            <RAN-UE-NGAP-ID>[RAN_UE_NGAP_ID]</RAN-UE-NGAP-ID>
+                                        </value>
+                                    </protocolIEs>
+                                    <protocolIEs>
+                                        <id>133</id>
+                                        <criticality>reject</criticality>
+                                        <value>
+                                            <PDUSessionResourceListCxtRelReq>
+                                                <PDUSessionResourceListCxtRelReq>
+                                                    <pDUSessionID>[ue_pdu_session_id]</pDUSessionID>
+                                                </PDUSessionResourceListCxtRelReq>
+                                            </PDUSessionResourceListCxtRelReq>
+                                        </value>
+                                    </protocolIEs>
+                                    <protocolIEs>
+                                        <id>15</id>
+                                        <criticality>ignore</criticality>
+                                        <value>
+                                            <Cause>
+                                                <radioNetwork>user-inactivity</radioNetwork>
+                                            </Cause>
+                                        </value>
+                                    </protocolIEs>
+                                </protocolIEs>
+                            </UEContextReleaseRequest>
+                        </value>
+                    </initiatingMessage>
+                </NGAP-PDU>
+            </sendMessageNGAP>
+        </do>
+      
+    </function>
+</scenario>

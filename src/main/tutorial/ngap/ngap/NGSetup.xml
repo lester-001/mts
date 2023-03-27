@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Related XMLSchema file: conf/schemas/scenario.xsd -->
+<scenario>
+    <function name="ngsetup">
+        <input>
+        </input>
+    
+        <do>    
+            <!--******************* Send NGSetup ********************-->
+            <sendMessageNGAP name="Send NGSetup" channel="[ngap_ch_name]">
+                <NGAP-PDU>
+                    <initiatingMessage>
+                        <procedureCode>21</procedureCode>
+                        <criticality>reject</criticality>
+                        <value>
+                            <NGSetupRequest>
+                                <protocolIEs>
+                                    <protocolIEs>
+                                        <id>27</id>
+                                        <criticality>reject</criticality>
+                                        <value>
+                                            <GlobalRANNodeID>
+                                                <globalGNB-ID>
+                                                <pLMNIdentity>[gnb_plmn_id]</pLMNIdentity>
+                                                <gNB-ID><gNB-ID>[gnb_id]</gNB-ID></gNB-ID>
+                                            </globalGNB-ID>
+                                            </GlobalRANNodeID>
+                                        </value>
+                                    </protocolIEs>
+                                    <protocolIEs>
+                                        <id>82</id>
+                                        <criticality>ignore</criticality>
+                                        <value>
+                                            <RANNodeName>gnb.test.com</RANNodeName>
+                                        </value>
+                                    </protocolIEs>
+                                    <protocolIEs>
+                                        <id>21</id>
+                                        <criticality>ignore</criticality>
+                                        <value>
+                                            <PagingDRX>v32
+                                            </PagingDRX>
+                                        </value>
+                                    </protocolIEs>
+                                    <protocolIEs>
+                                        <id>102</id>
+                                        <criticality>ignore</criticality>
+                                        <value>
+                                            <SupportedTAList>
+                                                <SupportedTAList>
+                                                    <tAC>[gnb_tac]</tAC>
+                                                    <broadcastPLMNList>
+                                                    <broadcastPLMNList>
+                                                        <pLMNIdentity>[gnb_plmn_id]</pLMNIdentity>
+                                                        <tAISliceSupportList>
+                                                        <tAISliceSupportList>
+                                                            <s-NSSAI>
+                                                                <sST>[SST]</sST>
+                                                                <sD>[SD]</sD>
+                                                            </s-NSSAI>
+                                                        </tAISliceSupportList>
+                                                        </tAISliceSupportList>
+                                                    </broadcastPLMNList>
+                                                    </broadcastPLMNList>
+                                                </SupportedTAList>
+                                            </SupportedTAList>
+                                        </value>
+                                    </protocolIEs>
+                                </protocolIEs>
+                            </NGSetupRequest>
+                        </value>
+                    </initiatingMessage>
+                </NGAP-PDU>
+            </sendMessageNGAP>
+            <!--******************* Send NGSetup ********************-->
+
+            <log type="Scenario" level="INFO"> waiting ngsetup response</log>
+            <parameter name="[received]" operation="set" value="false"/>        
+            <receiveMessageNGAP name="wait_ngsetupresp" channel="channel_client" timeout="[timeout]" failedOnTimeout="true">
+                <parameter name="[messageType]" operation="protocol.setFromMessage" value="message.type"/>
+                <parameter name="[received]" operation="set" value="true"/> 
+            </receiveMessageNGAP>
+                    
+            <if>
+                <condition>
+                    <test parameter="[messageType]" condition="string.equals" value="NGSetupResponse"/>
+                </condition>
+                <then>
+                    <log type="Scenario" level="INFO">Received NGSetupResponse</log>
+                    <goto  name="goto_sendInitUE" label="sendInitUE" state="true"/>    
+                </then>    
+                <else>
+                    <log type="Scenario" level="ERROR">Received unexperted message</log>
+                    <exit name="exit" failed="false"/>
+                </else>
+            </if>
+        </do>
+      
+        <output>
+            <parameter name="[function:received]" />
+        </output>
+    </function>
+</scenario>

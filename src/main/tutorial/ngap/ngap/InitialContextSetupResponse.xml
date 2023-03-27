@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Related XMLSchema file: conf/schemas/scenario.xsd -->
+<scenario>
+    <function name="initContext">
+        <input>
+        </input>
+    
+        <do>    
+            <sendMessageNGAP name="initContextSetupResponse" channel="[ngap_ch_name]">
+            <NGAP-PDU>
+                <successfulOutcome>
+                    <procedureCode>14</procedureCode>
+                    <criticality>ignore</criticality>
+                    <value>
+                        <InitialContextSetupResponse>
+                            <protocolIEs>
+                                <protocolIEs>
+                                    <id>10</id>
+                                    <criticality>reject</criticality>
+                                    <value>
+                                        <AMF-UE-NGAP-ID>[AMF_UE_NGAP_ID]</AMF-UE-NGAP-ID>
+                                    </value>
+                                </protocolIEs>
+                                <protocolIEs>
+                                    <id>85</id>
+                                    <criticality>reject</criticality>
+                                    <value>
+                                        <RAN-UE-NGAP-ID>[RAN_UE_NGAP_ID]</RAN-UE-NGAP-ID>
+                                    </value>
+                                </protocolIEs>
+                            </protocolIEs>
+                        </InitialContextSetupResponse>
+                    </value>
+                </successfulOutcome>
+            </NGAP-PDU>
+            </sendMessageNGAP>
+        </do>
+      
+    </function>
+</scenario>

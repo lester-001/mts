@@ -9,16 +9,27 @@ import com.ericsson.mts.nas.message.AbstractMessage;
 import com.ericsson.mts.nas.registry.Registry;
 
 import com.ericsson.mts.nas.writer.XMLFormatWriter;
+import com.ericsson.mts.nas.reader.XMLFormatReader;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
 
 import javax.xml.bind.DatatypeConverter;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+
+import static com.ericsson.mts.nas.writer.XMLFormatWriter.bytesToHex;
 
 public class MsgNgap extends MsgS1ap {
 
@@ -27,11 +38,11 @@ public class MsgNgap extends MsgS1ap {
     }
 
     @Override
-    protected String getXmlRootNodeName() {
+    public String getXmlRootNodeName() {
         return "NGAP-PDU";
     }
 
-    protected ASN1Translator getASN1Translator() {
+    public ASN1Translator getASN1Translator() {
         return ((StackNgap) this.stack).getAsn1Translator();
     }
 
@@ -45,7 +56,7 @@ public class MsgNgap extends MsgS1ap {
     }
 
     @Override
-    public byte[] encode() throws Exception {
+    public byte[] encode() throws Exception {   
         return super.encode();
     }
 
@@ -76,6 +87,41 @@ public class MsgNgap extends MsgS1ap {
                 nasPDUElement.appendChild(nasPDUElement.getOwnerDocument().adoptNode(xml));
             }
         }
+ 
+        /* 
+ {
+            String nasxml= "<L3MessageWrapper><ExtendedProtocolDiscriminator><ExtendedProtocolDiscriminator><ExtendedProtocolDiscriminator>A5gsMobilityManagementMessages</ExtendedProtocolDiscriminator></ExtendedProtocolDiscriminator></ExtendedProtocolDiscriminator><SpareHalfOctet><SpareHalfOctet/></SpareHalfOctet><SecurityHeaderType><SecurityHeaderType><SecurityHeaderType>Plain5gsNasMessageNotSecurityProtected</SecurityHeaderType><Plain5gsNasMessageNotSecurityProtected><MessageType><MessageType>IdentityRequest</MessageType><IdentityRequest><SpareHalfOctet><SpareHalfOctet/></SpareHalfOctet><A5gsIdentityType><A5gsIdentityType><TypeOfIdentity>1</TypeOfIdentity></A5gsIdentityType></A5gsIdentityType></IdentityRequest></MessageType></Plain5gsNasMessageNotSecurityProtected></SecurityHeaderType></SecurityHeaderType></L3MessageWrapper>";
+            System.out.println("--------------encode IN String format is----: " + nasxml);
+            InputStream InputStream = new ByteArrayInputStream((nasxml.getBytes()));
+            
+            XMLFormatReader formatReader = new XMLFormatReader(InputStream, "");
+            byte[] data1 = getNASTranslator().encode(getRegistryNas(), formatReader);
+            System.out.println("--------------encode IN String format is: " + new String(data1));
+        }
+
+        {
+            String nas = "7e004179000bf264f086020040fb008d0e2e02f070";
+            //String nas = "7E005B01";
+            XMLFormatWriter formatWriter = new XMLFormatWriter();
+
+            BitInputStream bitInputStream = new BitInputStream(new ByteArrayInputStream(DatatypeConverter.parseHexBinary(nas)));
+            getNASTranslator().decode(getRegistryNas(),bitInputStream, formatWriter);
+            Element xml = formatWriter.getResultElement();
+            
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer trans = tf.newTransformer();
+            StringWriter sw = new StringWriter();
+            trans.transform(new DOMSource(xml), new StreamResult(sw));
+            System.out.println("--------------XML IN String format is: \n" + sw.toString());
+
+            String nasxml = sw.toString();
+            
+            InputStream InputStream = new ByteArrayInputStream((nasxml.getBytes()));
+            
+            XMLFormatReader formatReader = new XMLFormatReader(InputStream, "");
+            byte[] data1 = getNASTranslator().encode(getRegistryNas(), formatReader);
+            System.out.println("--------------encode IN String format is: " + new String(data1));
+        } */
     }
 
     @Override

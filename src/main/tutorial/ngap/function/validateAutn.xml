@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Related XMLSchema file: conf/schemas/scenario.xsd -->
+<scenario>
+    <function name="validateAutn">
+        <input>
+            <parameter name="[function:rand]" />
+            <parameter name="[function:sqn]" />
+            <parameter name="[function:amf]" />
+            <parameter name="[function:indBitLen]" />
+            <parameter name="[function:wrappingDelta]" />
+            <parameter name="[function:sqnArr]" />
+            <parameter name="[function:receivedMAC]" />
+        </input>
+    
+        <do>    
+            <parameter name="[sqnresult]" operation="protocol.SQN" value="[indBitLen]" value2="[wrappingDelta]" value3="[sqnArr]" value4="getSqn"/>  
+            <parameter name="[mileresult]" operation="protocol.Milenage" value="[ue_key]" value2="[ue_op]" value3="[rand]" value4="[sqnresult]" value5="[amf]"/>  
+            <parameter name="[ck]"  operation="set" value="[mileresult(0)]"/>
+            <parameter name="[ik]"  operation="set" value="[mileresult(1)]"/>
+            <parameter name="[ak]"  operation="set" value="[mileresult(2)]"/>
+            <parameter name="[mac]"  operation="set" value="[mileresult(3)]"/>
+            <parameter name="[res]"  operation="set" value="[mileresult(4)]"/>
+            <parameter name="[sqnXorAk]" operation="binary.xor" value="[sqn]" value2="[ak]"/>  
+
+            <parameter name="[checkresult]" operation="protocol.SQN" value="[indBitLen]" value2="[wrappingDelta]" value3="[sqnArr]" value4="checkSqn" value5="[sqnXorAk]"/>  
+
+            <if>
+                <condition>
+                    <test parameter="[checkresult(0)]" condition="string.equals" value="0"/>                                              
+                </condition>
+                <then>
+                    <parameter name="[validated]"  operation="set" value="false"/>
+                </then> 
+                <else>
+                    <parameter name="[checkresult]" operation="list.removeFirst" value="[checkresult]"/>
+                    <parameter name="[osqnArr]" operation="set" value="[checkresult]"/>
+                    
+                    <parameter name="[sqnresult]" operation="protocol.SQN" value="[indBitLen]" value2="[wrappingDelta]" value3="[osqnArr]" value4="getSqn"/>  
+                    <parameter name="[mileresult]" operation="protocol.Milenage" value="[ue_key]" value2="[ue_op]" value3="[rand]" value4="[sqnresult]" value5="[amf]"/>  
+
+                    <if>
+                        <condition>
+                            <test parameter="[mac]" condition="string.equals" value="[receivedMAC]"/>                                              
+                        </condition>
+                        <then>
+                            <parameter name="[validated]"  operation="set" value="true"/> 
+                        </then> 
+                        <else>
+                            <parameter name="[validated]"  operation="set" value="false"/> 
+                        </else>    
+                    </if>    
+
+                    <parameter name="[validated]"  operation="set" value="true"/> 
+                </else>    
+            </if>            
+        </do>
+      
+        <output>
+            <parameter name="[function:validated]" />
+            <parameter name="[function:osqnArr]" />
+        </output>
+    </function>
+</scenario>

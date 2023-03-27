@@ -632,7 +632,7 @@ elements:
             - "@type": "CHOICE"
               name: "S-NSSAI"
               field:
-                name: "Length of S-NSSAI contents"
+                name: "LengthOfSNSSAIContents"
                 length: 8
                 namedValue:
                   1: "SST"
@@ -681,6 +681,88 @@ elements:
                 - keys:
                     - 8
                   pdu:
+                    - "@type": BIN
+                      name: "SST"
+                      length: 8
+                    - "@type": BIN
+                      name: "SD"
+                      length: 24
+                    - "@type": BIN
+                      name: "mapped HPLMN SST"
+                      length: 8
+                    - "@type": BIN
+                      name: "mapped HPLMN SD"
+                      length: 24
+
+  - name: "Rejected NSSAI"
+    pdu:
+      - "@type": "MULTI"
+        name: S-NSSAI value
+        contentLength: "Length"
+        nBit: 8
+        pdu:
+            - "@type": "CHOICE"
+              name: "S-NSSAI"
+              field:
+                name: "LengthOfSNSSAIContents"
+                length: 4
+                namedValue:
+                  1: "SST"
+                  2: "SST and mapped HPLMN SST"
+                  4: "SST and SD"
+                  5: "SST, SD and mapped HPLMN SST"
+                  8: "SST, SD, mapped HPLMN SST and mapped HPLMN SD"
+              pdus:
+                - keys:
+                    - 1
+                    - 7
+                  pdu:
+                    - name: "Cause"
+                      length: 4
+                    - "@type": BIN
+                      name: "SST"
+                      length: 8
+                - keys:
+                    - 2
+                  pdu:
+                    - name: "Cause"
+                      length: 4
+                    - "@type": BIN
+                      name: "SST"
+                      length: 8
+                    - "@type": BIN
+                      name: "mapped HPLMN SST"
+                      length: 8
+                - keys:
+                    - 4
+                  pdu:
+                    - name: "Cause"
+                      length: 4
+                    - "@type": BIN
+                      name: "SST"
+                      length: 8
+                    - "@type": BIN
+                      name: "SD"
+                      length: 24
+                - keys:
+                    - 5
+                  pdu:
+                    - name: "Cause"
+                      length: 4
+                    - "@type": BIN
+                      name: "SST"
+                      length: 8
+                    - "@type": BIN
+                      name: "SD"
+                      length: 24
+                    - "@type": BIN
+                      name: "mapped HPLMN SST"
+                      length: 8
+                - keys:
+                    - 8
+                  pdu:
+                    - name: "Cause"
+                      length: 4
                     - "@type": BIN
                       name: "SST"
                       length: 8

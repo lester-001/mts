@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Related XMLSchema file: conf/schemas/scenario.xsd -->
+<scenario>
+    <function name="sendPDUSessionResourceModifyResponse">
+        <input>
+        </input>
+    
+        <do>    
+            <sendMessageNGAP name="PDUSessionResourceModifyResponse" channel="[ngap_ch_name]">
+            <NGAP-PDU>
+                <successfulOutcome>
+                    <procedureCode>26</procedureCode>
+                    <criticality>reject</criticality>
+                    <value>
+                        <PDUSessionResourceModifyResponse>
+                            <protocolIEs>
+                                <protocolIEs>
+                                    <id>10</id>
+                                    <criticality>ignore</criticality>
+                                    <value>
+                                        <AMF-UE-NGAP-ID>[AMF_UE_NGAP_ID]</AMF-UE-NGAP-ID>
+                                    </value>
+                                </protocolIEs>
+                                <protocolIEs>
+                                    <id>85</id>
+                                    <criticality>ignore</criticality>
+                                    <value>
+                                        <RAN-UE-NGAP-ID>[RAN_UE_NGAP_ID]</RAN-UE-NGAP-ID>
+                                    </value>
+                                </protocolIEs>
+                                <protocolIEs>
+                                    <id>65</id>
+                                    <criticality>ignore</criticality>
+                                    <value>
+                                        <PDUSessionResourceModifyListModRes>
+                                            <PDUSessionResourceModifyListModRes>
+                                                <pDUSessionID>[ue_pdu_session_id]</pDUSessionID>
+                                                <pDUSessionResourceModifyResponseTransfer>
+                                                    <qosFlowAddOrModifyResponseList>
+                                                        <qosFlowAddOrModifyResponseList>
+                                                            <qosFlowIdentifier>[ue_qos_flow_id]</qosFlowIdentifier>
+                                                        </qosFlowAddOrModifyResponseList>
+                                                    </qosFlowAddOrModifyResponseList>
+                                                </pDUSessionResourceModifyResponseTransfer>
+                                            </PDUSessionResourceModifyListModRes>
+                                        </PDUSessionResourceModifyListModRes>
+                                    </value>
+                                </protocolIEs>
+                            </protocolIEs>
+                        </PDUSessionResourceModifyResponse>
+                    </value>
+                </successfulOutcome>
+            </NGAP-PDU>
+            </sendMessageNGAP>
+        </do>
+      
+    </function>
+</scenario>

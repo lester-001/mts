@@ -169,7 +169,7 @@ elements:
         nBit: 16
         pdu:
           - "@type": "DIGITS"
-            name: "QoS rule identifier"
+            name: "QoSidentifier"
             length: 8
           - "@type": "BINLENGTH"
             name: "content"
@@ -178,9 +178,9 @@ elements:
                 name: "Length"
                 length: 16
               - "@type": "CHOICE"
-                name: "Rule operation code"
+                name: "RuleOperationCode"
                 field:
-                  name: "Rule operation code value"
+                  name: "RuleOperationCodeValue"
                   length: 3
                   namedValue:
                     0: "Reserved"
@@ -196,23 +196,23 @@ elements:
                       - 3
                       - 4
                     pdu:
-                      - name: "DQR bit"
+                      - name: "DQRbit"
                         length: 1
                         namedValue:
                           0: "the QoS rule is not the default QoS rule"
                           1: "the QoS rule is the default QoS rule"
                       - "@type": "MULTI"
-                        name: "Packet filter"
+                        name: "Packetfilter"
                         contentLength: "Number"
                         pdu:
                           - "@type": "DIGITS"
-                            name: "Number of packet filters"
+                            name: "NumberofPacketFilters"
                             length: 4
                           - "@type": "SPARE"
                             name: "Spare"
                             length: 2
                             value: 0
-                          - name: "Packet filter direction"
+                          - name: "PacketFilterDirection"
                             length: 2
                             namedValue:
                               0: "reserved"
@@ -220,15 +220,15 @@ elements:
                               2: "uplink only"
                               3: "bidirectional"
                           - "@type": "DIGITS"
-                            name: "packet filter identifier"
+                            name: "PacketFilterIdentifier"
                             length: 4
                           - "@type": "BINLENGTH"
-                            name: "packet filter container"
+                            name: "PacketFilterContainer"
                             pdu:
                               - "@type": "DIGITS"
                                 name: "Length"
                                 length: 8
-                              - name: "Packet filter component type"
+                              - name: "PacketFilterComponentType"
                                 length: 8
                                 namedValue:
                                   1: "Match-all type"
@@ -252,22 +252,22 @@ elements:
                                   134: "802.1Q S-TAG PCP/DEI type"
                                   135: "Ethertype type"
                               - "@type": "BIN"
-                                name: "Packet filter content"
+                                name: "PacketFilterContent"
                                 length: -1
                       - "@type": "DIGITS"
-                        name: "Qos rule preference"
+                        name: "QosRulePreference"
                         length: 8
                       - "@type": "SPARE"
                         name: "Spare"
                         length: 1
                         value: 0
-                      - name: "E bit"
+                      - name: "Ebit"
                         length: 1
                         namedValue:
                           0: "Segregation not requested"
                           1: "Segregation requested"
                       - "@type": "DIGITS"
-                        name: "Qos flow identifier"
+                        name: "QosFlowIdentifier"
                         length: 6
                   - keys:
                       - 5
@@ -433,6 +433,62 @@ elements:
           0: "Reflective QoS not supported"
           1: "Reflective QoS supported"
 
+  - name: "Extended protocol configuration options"
+    pdu:
+      - "@type": "EXTMULTI"
+        name: "Extended protocol configuration option"
+        contentLength: "Length"
+        nBit: 16
+        Extension: 1
+        ConfigurationProtocol: 7
+        pdu:
+          - "@type": "CHOICE"
+            name: "ProtocolOrContainer"
+            field:
+              name: "ProtocolOrContainerID"
+              length: 16
+              namedValue:
+                3: "Create"
+                10: "Delete"
+                13: "Modifyfl"
+            pdus:
+              - keys:
+                  - 3
+                pdu:
+                  - "@type": "BINLENGTH"
+                    name: "DNSServerIPv6Addr"
+                    pdu:
+                      - "@type": "DIGITS"
+                        name: "Length"
+                        length: 8
+                      - "@type": "BIN"
+                        name: "ParameterContents"
+                        length: -1
+              - keys:
+                  - 10
+                pdu:
+                  - "@type": "BINLENGTH"
+                    name: "IPAddressAllocViaNAS"
+                    pdu:
+                      - "@type": "DIGITS"
+                        name: "Length"
+                        length: 8
+                      - "@type": "BIN"
+                        name: "ParameterContents"
+                        length: -1
+              - keys:
+                  - 13
+                pdu:
+                  - "@type": "BINLENGTH"
+                    name: "DNSServerIPv4Addr"
+                    pdu:
+                      - "@type": "DIGITS"
+                        name: "Length"
+                        length: 8
+                      - "@type": "BIN"
+                        name: "ParameterContents"
+                        length: -1
+
   - name: "QoS flow descriptions"
     pdu:
       - "@type": "MULTI"
@@ -450,7 +506,7 @@ elements:
           - "@type": "CHOICE"
             name: "Operation code"
             field:
-              name: "Operation code value"
+              name: "OperationCodeValue"
               length: 3
               namedValue:
                 1: "Create new QoS rule"
@@ -464,7 +520,7 @@ elements:
                     name: "Spare"
                     length: 6
                     value: 0
-                  - name: "DQR bit"
+                  - name: "DQRbit"
                     length: 1
                     namedValue:
                       0: "reserved"
@@ -476,7 +532,7 @@ elements:
                     name: "Spare"
                     length: 6
                     value: 0
-                  - name: "DQR bit"
+                  - name: "DQRbit"
                     length: 1
                     namedValue:
                       0: "parameters list is not included"
@@ -488,23 +544,24 @@ elements:
                     name: "Spare"
                     length: 6
                     value: 0
-                  - name: "DQR bit"
+                  - name: "DQRbit"
                     length: 1
                     namedValue:
                       0: "extension of previously provided parameters"
                       1: "replacement of all previously provided parameters"
           - "@type": "MULTI"
-            name: "Parameter list"
+            name: "ParameterList"
             contentLength: "Number"
+            length: 6
             pdu:
               - "@type": "DIGITS"
-                name: "Number of parameters"
+                name: "NumberOfParameters"
                 length: 6
               - "@type": "DIGITS"
-                name: "Parameter identifier"
+                name: "ParameterIdentifier"
                 length: 8
               - "@type": "BIN"
-                name: "Parameter contents"
+                name: "ParameterContents"
 
   - name: "Payload container"
     pdu:
@@ -555,35 +612,5 @@ elements:
           211: "PDU session release command"
           212: "PDU session release complete"
           214: "5GSM status"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

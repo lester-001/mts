@@ -67,7 +67,7 @@ public class StackNgap extends Stack {
      *
      * @return asn1 translator
      */
-    ASN1Translator getAsn1Translator() {
+    public ASN1Translator getAsn1Translator() {
         return asn1Translator;
     }
 
