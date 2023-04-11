@@ -160,6 +160,13 @@ elements:
           4: "Unstructured"
           5: "Ethernet"
           7: "reserved"
+  
+  - name: "Maximum number of supported packet filters"
+    pdu:
+      - name: "Maximum number of supported packet filters value"
+        length: 8
+      - name: "Spare"
+        length: 8
 
   - name: "Authorized QoS rules"
     pdu:
@@ -481,6 +488,66 @@ elements:
                 pdu:
                   - "@type": "BINLENGTH"
                     name: "DNSServerIPv4Addr"
+                    pdu:
+                      - "@type": "DIGITS"
+                        name: "Length"
+                        length: 8
+                      - "@type": "BIN"
+                        name: "ParameterContents"
+                        length: -1
+              - keys:
+                  - 23
+                pdu:
+                  - "@type": "BINLENGTH"
+                    name: "3GPPPSdataoffUEstatus"
+                    pdu:
+                      - "@type": "DIGITS"
+                        name: "Length"
+                        length: 8
+                      - "@type": "BIN"
+                        name: "ParameterContents"
+                        length: -1
+              - keys:
+                  - 32
+                pdu:
+                  - "@type": "BINLENGTH"
+                    name: "EthernetFramePayloadMTURequest"
+                    pdu:
+                      - "@type": "DIGITS"
+                        name: "Length"
+                        length: 8
+                      - "@type": "BIN"
+                        name: "ParameterContents"
+                        length: -1
+              - keys:
+                  - 35
+                pdu:
+                  - "@type": "BINLENGTH"
+                    name: "twooctetssupportindicator"
+                    pdu:
+                      - "@type": "DIGITS"
+                        name: "Length"
+                        length: 8
+                      - "@type": "BIN"
+                        name: "ParameterContents"
+                        length: -1
+              - keys:
+                  - 36
+                pdu:
+                  - "@type": "BINLENGTH"
+                    name: "QoSflowdescriptionstwooctetssupportindicator"
+                    pdu:
+                      - "@type": "DIGITS"
+                        name: "Length"
+                        length: 8
+                      - "@type": "BIN"
+                        name: "ParameterContents"
+                        length: -1
+              - keys:
+                  - 32801
+                pdu:
+                  - "@type": "BINLENGTH"
+                    name: "InternetProtocolControlProtocol"
                     pdu:
                       - "@type": "DIGITS"
                         name: "Length"

@@ -117,7 +117,8 @@ public class PluggableParameterOperatorBinary extends AbstractPluggableParameter
     final private String NAME_BIN_COMPRESS = "binary.compress";
     final private String NAME_BIN_UNCOMPRESS = "binary.uncompress";
     final private String NAME_BIN_XOR = "binary.xor";
-    final private String NAME_BIN_CALCRES= "binary.calcres";
+    final private String NAME_BIN_CALCRES = "binary.calcres";
+    final private String NAME_BIN_RADIX = "binary.radix";
 
     
     public PluggableParameterOperatorBinary()
@@ -161,6 +162,7 @@ public class PluggableParameterOperatorBinary extends AbstractPluggableParameter
         this.addPluggableName(new PluggableName(NAME_BIN_UNCOMPRESS));
         this.addPluggableName(new PluggableName(NAME_BIN_XOR));
         this.addPluggableName(new PluggableName(NAME_BIN_CALCRES));
+        this.addPluggableName(new PluggableName(NAME_BIN_RADIX));
     }
 
     @Override
@@ -531,6 +533,29 @@ public class PluggableParameterOperatorBinary extends AbstractPluggableParameter
                     byte[] authTag = hmacSha256.doFinal(data);
                     String ret = new String(bytesToHex(authTag));
                     result.add(ret);
+                }
+                else if (name.equalsIgnoreCase(NAME_BIN_RADIX))
+                {
+                	Parameter param_2 = assertAndGetParameter(operands, "value2"); 
+                	Parameter param_3 = assertAndGetParameter(operands, "value3"); 
+                	int radix = Integer.parseInt(param_2.get(0).toString()) ;
+                	int len = Integer.parseInt(param_3.get(0).toString()) ;
+                	                	
+                    BigInteger input = new BigInteger(param_1.get(0).toString(), 16);
+                    String fmt = "%" + len + "s";
+
+                    if (radix == 2) {
+                        String ret = String.format(fmt, input.toString(2)).replace(' ', '0');
+                        result.add(ret);
+
+                    } else if (radix == 16) {
+                        String ret = String.format(fmt, input.toString(16)).replace(' ', '0');
+                        result.add(ret);
+
+                    } else if (radix == 10) {
+                        String ret = input.toString(10);
+                        result.add(ret);
+                    }
                 }
                 else if (name.equalsIgnoreCase(NAME_BIN_DIFFERENCE))
                 {

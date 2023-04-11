@@ -12,7 +12,7 @@ messages :
       12:
         type: "PDU session identity 2"
         name: "PDU session ID"
-        length: 8
+        length: -1
       59:
         type: "PDU session identity 2"
         name: "Old PDU session ID"
@@ -65,6 +65,9 @@ messages :
         length: 4
       28:
         type: "5GSM capability"
+      55:
+        type: "Maximum number of supported packet filters"
+        length: 16
       7B:
         type: "Extended protocol configuration options"
         length: -1

@@ -77,7 +77,7 @@ public class DataPDU {
 	                else if (element.attributeValue("format").equalsIgnoreCase("binary"))
 	                {
 	                    String text = element.getTextTrim();
-	                    datas.add(Utils.parseBinaryString(text));
+	                    datas.add(text.getBytes());
 	                }
 	            }
 	        }
