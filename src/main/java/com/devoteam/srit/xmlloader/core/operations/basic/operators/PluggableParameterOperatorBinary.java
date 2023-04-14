@@ -538,10 +538,18 @@ public class PluggableParameterOperatorBinary extends AbstractPluggableParameter
                 {
                 	Parameter param_2 = assertAndGetParameter(operands, "value2"); 
                 	Parameter param_3 = assertAndGetParameter(operands, "value3"); 
+                    Parameter param_4 = getParameter(operands, "value4"); 
                 	int radix = Integer.parseInt(param_2.get(0).toString()) ;
                 	int len = Integer.parseInt(param_3.get(0).toString()) ;
+                    int radixFrom = 16;
+
+                    radixFrom = Integer.parseInt(param_4.get(0).toString());
+                    
+                    if (radixFrom != 16 && radixFrom != 10 && radixFrom != 2) {
+                        radixFrom = 16;
+                    }
                 	                	
-                    BigInteger input = new BigInteger(param_1.get(0).toString(), 16);
+                    BigInteger input = new BigInteger(param_1.get(0).toString(), radixFrom);
                     String fmt = "%" + len + "s";
 
                     if (radix == 2) {
