@@ -10,6 +10,7 @@ import gp.utils.arrays.Array;
 import gp.utils.arrays.DefaultArray;
 import gp.utils.arrays.SupArray;
 
+import javax.xml.bind.DatatypeConverter;
 import com.devoteam.srit.xmlloader.core.Parameter;
 import com.devoteam.srit.xmlloader.core.coding.binary.Dictionary;
 import com.devoteam.srit.xmlloader.core.coding.binary.ElementAbstract;
@@ -76,8 +77,8 @@ public class DataPDU {
 	                }
 	                else if (element.attributeValue("format").equalsIgnoreCase("binary"))
 	                {
-	                    String text = element.getTextTrim();
-	                    datas.add(text.getBytes());
+	                    String text = element.getTextTrim();				
+	                    datas.add(DatatypeConverter.parseHexBinary(text));
 	                }
 	            }
 	        }
