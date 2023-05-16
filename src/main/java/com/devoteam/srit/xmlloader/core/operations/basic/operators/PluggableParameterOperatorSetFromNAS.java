@@ -5,6 +5,8 @@ import com.devoteam.srit.xmlloader.core.Parameter;
 import com.devoteam.srit.xmlloader.core.Runner;
 import com.devoteam.srit.xmlloader.core.exception.ParameterException;
 import com.devoteam.srit.xmlloader.core.pluggable.PluggableName;
+import com.devoteam.srit.xmlloader.core.protocol.Stack;
+import com.devoteam.srit.xmlloader.core.protocol.StackFactory;
 import com.devoteam.srit.xmlloader.core.utils.Utils;
 import com.devoteam.srit.xmlloader.ngap.StackNgap;
 import com.ericsson.mts.nas.BitInputStream;
@@ -63,7 +65,19 @@ public class PluggableParameterOperatorSetFromNAS extends AbstractPluggableParam
         
         try
         {
-            StackNgap ngap = new StackNgap();
+            StackNgap stack = null; 
+            
+            try
+            {
+                stack = (StackNgap)StackFactory.getStack("NGAP");
+            }
+            catch (Exception e)
+            {
+                
+            }
+            if (stack == null) {
+                stack = new StackNgap();
+            }
 
             for(int j=0; j<operate_type.length(); j++)
             {
@@ -75,7 +89,7 @@ public class PluggableParameterOperatorSetFromNAS extends AbstractPluggableParam
                         
                         XMLFormatWriter formatWriter = new XMLFormatWriter();        
                         BitInputStream bitInputStream = new BitInputStream(new ByteArrayInputStream(DatatypeConverter.parseHexBinary(nashex)));
-                        ngap.getNASTranslator().decode(ngap.getRegistry5GSNasTranslator(),bitInputStream, formatWriter);
+                        stack.getNASTranslator().decode(stack.getRegistry5GSNasTranslator(),bitInputStream, formatWriter);
         
                         Element xml = formatWriter.getResultElement();
                         TransformerFactory tf = TransformerFactory.newInstance();
@@ -92,7 +106,7 @@ public class PluggableParameterOperatorSetFromNAS extends AbstractPluggableParam
                         InputStream InputStream = new ByteArrayInputStream((nasxml.getBytes()));
                         
                         XMLFormatReader formatReader = new XMLFormatReader(InputStream, "");
-                        byte[] data1 = ngap.getNASTranslator().encode(ngap.getRegistry5GSNasTranslator(), formatReader);
+                        byte[] data1 = stack.getNASTranslator().encode(stack.getRegistry5GSNasTranslator(), formatReader);
                         String encoded = new String(bytesToHex(data1));
                         result.add(encoded);
                     }

@@ -46,7 +46,7 @@ public class StackS1ap extends Stack {
      *
      * @return asn1 translator
      */
-    ASN1Translator getAsn1Translator() {
+    public ASN1Translator getAsn1Translator() {
         return asn1Translator;
     }
 }

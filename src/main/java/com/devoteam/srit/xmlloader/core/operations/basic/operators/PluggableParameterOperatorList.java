@@ -452,7 +452,7 @@ public class PluggableParameterOperatorList extends AbstractPluggableParameterOp
             if(null != param2){
                 String timeoutStr = (String) param2.get(0);
                 int timeoutInt = Integer.parseInt(timeoutStr);
-                result = queue.poll(timeoutInt, TimeUnit.SECONDS);
+                result = queue.poll(timeoutInt, TimeUnit.MILLISECONDS);
                 if(null == result){
                     result = new Parameter();
                 }
