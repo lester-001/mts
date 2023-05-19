@@ -5,3 +5,10 @@ src/main/doc/~$S_quick_start.doc
 .classpath
 .settings/org.eclipse.jdt.core.prefs
 .project
+src/main/tutorial/ngap/tester.properties
+src/main/tutorial/ngap/testcase/ngsetup.xml
+src/main/tutorial/ngap/testcase/locationUpdate.xml
+src/main/tutorial/ngap/test.xml
+src/main/tutorial/ngap/ngap_setup_pdu.xml
+src/main/lib/native/libcommon-share.so
+src/main/java/com/devoteam/srit/xmlloader/ngap/InputStreamOf.java
