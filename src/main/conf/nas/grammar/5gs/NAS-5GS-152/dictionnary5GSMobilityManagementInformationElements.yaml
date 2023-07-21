@@ -538,6 +538,18 @@ elements:
         name: "MAC"
         length: 64
 
+  - name: "Authentication failure parameter"
+    pdu:
+      - "@type": "DIGITS"
+        name: "Length"
+        length : 8
+      - "@type": BIN
+        name: "SQN_MS xor AK"
+        length: 48
+      - "@type": BIN
+        name: "MAC-S"
+        length: 64
+
   - name: "Authentication response parameter"
     pdu:
       - "@type" : BIN
@@ -1330,4 +1342,8 @@ elements:
         length: -1
 
 
+  - name: "5GMM cause"
+    pdu:
+      - name: "5GMM cause"
+        length: 8
 

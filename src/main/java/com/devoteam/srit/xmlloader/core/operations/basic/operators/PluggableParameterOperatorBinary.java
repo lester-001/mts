@@ -53,6 +53,7 @@ import java.net.InetAddress;
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -119,6 +120,8 @@ public class PluggableParameterOperatorBinary extends AbstractPluggableParameter
     final private String NAME_BIN_XOR = "binary.xor";
     final private String NAME_BIN_CALCRES = "binary.calcres";
     final private String NAME_BIN_RADIX = "binary.radix";
+    final private String NAME_BIN_CHECKSUM = "binary.checksum";
+    final private String NAME_BIN_CHECKSUMTCPUDP = "binary.checksumtcpudp";
 
     
     public PluggableParameterOperatorBinary()
@@ -163,6 +166,8 @@ public class PluggableParameterOperatorBinary extends AbstractPluggableParameter
         this.addPluggableName(new PluggableName(NAME_BIN_XOR));
         this.addPluggableName(new PluggableName(NAME_BIN_CALCRES));
         this.addPluggableName(new PluggableName(NAME_BIN_RADIX));
+        this.addPluggableName(new PluggableName(NAME_BIN_CHECKSUM));
+        this.addPluggableName(new PluggableName(NAME_BIN_CHECKSUMTCPUDP));
     }
 
     @Override
@@ -812,6 +817,26 @@ public class PluggableParameterOperatorBinary extends AbstractPluggableParameter
                     baos.write(data_out, 0, data_out.length);
                     result.add( DefaultArray.toHexString(new DefaultArray(baos.toByteArray())) ) ;
                 }
+                else if (name.equalsIgnoreCase(NAME_BIN_CHECKSUM)) 
+                {
+
+                    String string1 = param_1.get(i).toString();   
+
+                    byte[] data1 = DefaultArray.fromHexString(string1).getBytes() ;
+
+                    long data_out = calculateChecksum(data1);
+                    result.add( Long.toHexString(data_out) ) ;
+                }
+                else if (name.equalsIgnoreCase(NAME_BIN_CHECKSUMTCPUDP)) 
+                {
+
+                    String string1 = param_1.get(i).toString();   
+
+                    byte[] data1 = DefaultArray.fromHexString(string1).getBytes() ;
+
+                    long data_out = calculateChecksumTCPUDP(data1);
+                    result.add( Long.toHexString(data_out) ) ;
+                }
                 else
                 {
                     throw new RuntimeException("unsupported operation " + name);
@@ -1347,5 +1372,107 @@ public class PluggableParameterOperatorBinary extends AbstractPluggableParameter
         }
         return ret;
     }
+
+  public static long calculateChecksum(byte[] buf) {
+    int length = buf.length;
+    int i = 0;
+
+    long sum = 0;
+    long data;
+
+    // Handle all pairs
+    while (length > 1) {
+      // Corrected to include @Andy's edits and various comments on Stack Overflow
+      data = (((buf[i] << 8) & 0xFF00) | ((buf[i + 1]) & 0xFF));
+      sum += data;
+      // 1's complement carry bit correction in 16-bits (detecting sign extension)
+      if ((sum & 0xFFFF0000) > 0) {
+        sum = sum & 0xFFFF;
+        sum += 1;
+      }
+
+      i += 2;
+      length -= 2;
+    }
+
+    // Handle remaining byte in odd length buffers
+    if (length > 0) {
+      // Corrected to include @Andy's edits and various comments on Stack Overflow
+      sum += (buf[i] << 8 & 0xFF00);
+      // 1's complement carry bit correction in 16-bits (detecting sign extension)
+      if ((sum & 0xFFFF0000) > 0) {
+        sum = sum & 0xFFFF;
+        sum += 1;
+      }
+    }
+
+    // Final 1's complement value correction to 16-bits
+    sum = ~sum;
+    sum = sum & 0xFFFF;
+    return sum;
+
+  }
+
+    public static long  net_checksum_add(int len, byte[] buf)
+    {
+        long sum = 0;
+        int i;
+    
+        for (i = 0; i < len; i++) {
+        	if ((i & 1) == 1) {
+        	    sum += Byte.toUnsignedInt(buf[i]);
+        	}
+        	else {
+        	    sum += Byte.toUnsignedInt(buf[i]) << 8;
+        	}
+        }
+        return sum;
+    }
+
+  public static long calculateChecksumTCPUDP(byte[] buf) {
+    int length = buf.length;
+
+    long sum = 0;
+    short csum_offset;
+
+    int proto = buf[9];
+
+    switch (proto) {
+        case 6:
+    	    csum_offset = 16;
+    	    break;
+        case 17:
+    	    csum_offset = 6;
+    	    break;
+        default:
+    	    return 0;
+    }
+    
+    if (length < csum_offset+2)
+	    return 0;
+
+    int hlen  = 20;
+    buf[hlen+csum_offset]   = (byte)0;
+    buf[hlen+csum_offset+1] = (byte)0;
+    
+    //byte[] payload0 = Arrays.copyOfRange(buf, 20, 22);
+
+    byte[] payload = Arrays.copyOfRange(buf, 20, length);
+    
+    sum += net_checksum_add(payload.length, payload);         // payload
+
+    byte[] addrs = Arrays.copyOfRange(buf, 12, 20);
+    sum += net_checksum_add(8, addrs);            // src + dst address
+    sum += proto + length - 20;                        // protocol & length
+
+    while ((sum>>16) != 0) {
+	    sum = (sum & 0xFFFF)+(sum >> 16);
+    }
+    sum = ~sum;
+    sum = sum & 0xFFFF;
+    
+    return sum;
+  }
+
 }
 

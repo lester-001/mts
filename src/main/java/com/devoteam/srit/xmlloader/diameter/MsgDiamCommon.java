@@ -618,7 +618,8 @@ public class MsgDiamCommon extends Msg
         else if ("IPAddress".equalsIgnoreCase(typeDico) || "IPAddress".equalsIgnoreCase(typeBase))
 	    {
 	    	byte[] val = new AVP_OctetString(avp).queryValue();
-	    	value = Utils.toIPAddress(val);
+	    	//value = Utils.toIPAddress(val);
+            value = val.toString();
 	    }
 		else if ("Address".equalsIgnoreCase(typeDico) || "Address".equalsIgnoreCase(typeBase))
 	    {

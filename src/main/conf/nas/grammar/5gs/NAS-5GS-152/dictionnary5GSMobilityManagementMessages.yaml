@@ -126,6 +126,15 @@ messages:
         length: -1
       78:
         type: "EAP message"
+  - name: "Authentication failure"
+    mandatory:
+      - name: "5GMM cause"
+        type: "5GMM cause"
+        length: 8
+    optional:
+      30:
+        type: "Authentication failure parameter"
+        length: -1
   - name: "Security mode command"
     mandatory:
       - name: "Selected NAS security algorithms"

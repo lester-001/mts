@@ -102,6 +102,8 @@ public class PluggableParameterOperatorMilenage extends AbstractPluggableParamet
                 String ak = new String(bytesToHex(result.get(MilenageResult.AK)));
                 String mac = new String(bytesToHex(result.get(MilenageResult.MAC_A)));
                 String res = new String(bytesToHex(result.get(MilenageResult.RES)));
+                String ak_r = new String(bytesToHex(result.get(MilenageResult.AK_R)));
+                String mac_s = new String(bytesToHex(result.get(MilenageResult.MAC_S)));
                 //String ckik = ck + ik;
 
                 //String sqnxorak = new String(bytesToHex(xor(result.get(MilenageResult.AK), sqn)));
@@ -112,6 +114,8 @@ public class PluggableParameterOperatorMilenage extends AbstractPluggableParamet
                 presult.add(ak);
                 presult.add(mac);
                 presult.add(res);
+                presult.add(ak_r);
+                presult.add(mac_s);
             }
             
         }
